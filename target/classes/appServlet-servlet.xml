@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:import="http://www.springframework.org/schema/beans" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
+						  	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+						    http://www.springframework.org/schema/beans
+						    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						    http://www.springframework.org/schema/tx
+						    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+						    http://www.springframework.org/schema/context
+						    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+						    http://www.springframework.org/schema/aop
+						    http://www.springframework.org/schema/context/spring-aop-4.0.xsd ">
+
+	<!-- Enable @Controller annotation support -->
+	<mvc:annotation-driven />
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Scan classpath for annotations (eg: @Service, @Repository etc) -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.rest.jersey" />
+
+	<!-- Map simple view name such as "test" into /WEB-INF/test.jsp -->
+	<!-- <bean id="viewResolver" -->
+	<!-- class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
+	<!-- <property name="order" value="1" /> -->
+	<!-- <property name="prefix" value="/WEB-INF/views/" /> -->
+	<!-- <property name="suffix" value=".html" /> -->
+	<!-- </bean> -->
+
+	<!-- JDBC Data Source. It is assumed you have MySQL running on localhost 
+		port 3306 with username root and blank password. Change below if it's not 
+		the case -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/usersdb" />
+		<property name="username" value="root" />
+		<property name="password" value="sukirti" />
+		<property name="validationQuery" value="SELECT 1" />
+	</bean>
+
+	<!-- Hibernate Session Factory -->
+	<bean id="mySessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<array>
+				<value>com.rest.jersey.model</value>
+			</array>
+		</property>
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=org.hibernate.dialect.MySQLDialect
+			</value>
+		</property>
+	</bean>
+
+	<!-- Hibernate Transaction Manager -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="mySessionFactory" />
+	</bean>
+	<!-- Activates annotation based transaction management -->
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+</beans>						    
