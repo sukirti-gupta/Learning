@@ -7,37 +7,14 @@
 
 	<http auto-config="true">
 		<intercept-url pattern='/rest/create**' access='ROLE_USER' />
-		<!-- <form-login login-page='/rest/login' default-target-url="/rest/success" -->
-		<!-- authentication-failure-url="/rest/failure" /> -->
-		<openid-login login-page='/rest/openidlogin'
-			authentication-failure-url="/rest/failure">
-			<attribute-exchange>
-				<openid-attribute name="email"
-					type="http://axschema.org/contact/email" required="true" />
-				<openid-attribute name="name"
-					type="http://axschema.org/namePerson" required="true" />
-			</attribute-exchange>
-		</openid-login>
-		<logout logout-success-url="/" />
+		<form-login login-page='/rest/login' default-target-url="/rest/success"
+			authentication-failure-url="/rest/login?authfailed" />
+		<access-denied-handler error-page="/rest/login?accessdenied" />
+		<logout logout-success-url="/rest/login?logout" />
+		<remember-me token-validity-seconds="1209600"
+			remember-me-parameter="remember-me" data-source-ref="dataSource" />
 		<http-basic />
 	</http>
-
-	<!-- <http auto-config="true"> -->
-	<!-- <intercept-url pattern='/rest/create**' access='ROLE_USER' /> -->
-	<!-- <openid-login login-page='/rest/openidlogin' -->
-	<!-- default-target-url="/rest/success"> -->
-	<!-- <form-login login-page='/rest/login' default-target-url="/rest/success" 
-		/> -->
-	<!-- <openid-login default-target-url="/rest/success"> -->
-	<!-- <attribute-exchange> -->
-	<!-- <openid-attribute name="email" -->
-	<!-- type="http://axschema.org/contact/email" required="true" /> -->
-	<!-- <openid-attribute name="name" -->
-	<!-- type="http://axschema.org/namePerson" /> -->
-	<!-- </attribute-exchange> -->
-	<!-- </openid-login> -->
-	<!-- <logout logout-success-url="/" /> -->
-	<!-- </http> -->
 
 	<authentication-manager>
 		<authentication-provider>
@@ -47,10 +24,6 @@
 				where name=?"
 				authorities-by-username-query="select name, role from userroles
 			where name =? " />
-			<user-service>
-				<user name="https://www.google.com/accounts/o8/ud" password=""
-					authorities="ROLE_USER, ROLE_ADMIN" />
-			</user-service>
 		</authentication-provider>
 	</authentication-manager>
 
@@ -61,35 +34,5 @@
 
 	<beans:bean id="webSecurityExpressionHandler"
 		class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
-
-	<!-- <http auto-config="true" use-expressions="true"> -->
-	<!-- <access-denied-handler error-page="/failure" /> -->
-	<!-- <intercept-url pattern="/rest/success" access="isAuthenticated()" -->
-	<!-- method="GET" /> -->
-	<!-- <intercept-url pattern="/**" access="permitAll" /> -->
-	<!-- <form-login login-page='/abc' username-parameter="name" -->
-	<!-- password-parameter="password" default-target-url="/success" -->
-	<!-- authentication-failure-url="/failure" /> -->
-	<!-- <logout logout-success-url="/success" /> -->
-	<!-- </http> -->
-
-	<!-- <http auto-config="true" create-session="stateless" use-expressions="true"> -->
-	<!-- <http pattern="/rest/login*" security="none" /> -->
-
-	<!-- <mvc:interceptors>  -->
-	<!--         <mvc:interceptor>  -->
-	<!--             <mvc:mapping path="/**/*"/> -->
-	<!--             <bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">  -->
-	<!--                 <property name="cacheSeconds" value="0"/>  -->
-	<!--                 <property name="useExpiresHeader" value="true"/>  -->
-	<!--                 <property name="useCacheControlHeader" value="true"/>  -->
-	<!--                 <property name="useCacheControlNoStore" value="true"/>  -->
-	<!--             </bean>  -->
-	<!--         </mvc:interceptor>  -->
-	<!--     </mvc:interceptors> -->
-
-	<!-- <authentication-manager> <authentication-provider> <user-service> -->
-	<!-- <user name="user" password="user" authorities="ROLE_USER" /> </user-service> -->
-	<!-- </authentication-provider> </authentication-manager> -->
 
 </beans:beans>

@@ -1,31 +1,10 @@
 package com.rest.jersey.resource;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.Principal;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpUpgradeHandler;
-import javax.servlet.http.Part;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -42,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rest.jersey.model.User;
 import com.rest.jersey.service.UserService;
@@ -113,19 +91,23 @@ public class UserResource {
                     .entity(new Viewable("/failure")).build();
         }
     }
-
+    
     @Path("login")
     @GET
     @Produces (MediaType.TEXT_HTML)
-    public Response login() {
+    public Response loginError(@QueryParam("authfailed") String authfailed,
+    		@QueryParam("accessdenied") String accessdenied,
+    		@QueryParam("logout") String logout) {
+    	if(authfailed!=null) {
+    		return Response.ok(new Viewable("/login","Bad credentials")).build();
+    	}
+    	if(accessdenied!=null) {
+    		return Response.ok(new Viewable("/login","Access denied for this user")).build();
+    	}
+    	if(logout!=null) {
+    		return Response.ok(new Viewable("/login","Successfully logged out")).build();
+    	}
         return Response.ok(new Viewable("/login")).build();
-    }
-    
-    @Path("openidlogin")
-    @GET
-    @Produces (MediaType.TEXT_HTML)
-    public Response openidlogin() {
-        return Response.ok(new Viewable("/loginWithOpenid")).build();
     }
 
     @Path("login")
@@ -209,24 +191,6 @@ public class UserResource {
         }
         return als;
     }
-
-    //    @Path("create")
-    //    @POST
-    //    @Consumes (MediaType.APPLICATION_XML)
-    //    @Produces (MediaType.APPLICATION_XML)
-    //    public User createUser(User user){
-    //        LOG.debug("createUser()");
-    //        URI uri = uriInfo.getAbsolutePathBuilder().path(user.getName()).build();
-    //        Response.created(uri).build();
-    //        try {
-    //            userService.CreateUser(user);
-    //        } catch (ClassNotFoundException e) {
-    //            LOG.error(e.getLocalizedMessage());
-    //        } catch (SQLException e) {
-    //            LOG.error(e.getLocalizedMessage());
-    //        }
-    //        return user;
-    //    }
 
     @Path("create")
     @POST

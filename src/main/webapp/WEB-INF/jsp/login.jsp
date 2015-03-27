@@ -15,31 +15,54 @@
 	}
 %>
 
-<body onload='document.f.j_username.focus();'>
-	<h3>Login</h3>
-	<br>
-	<label>${message }</label>
-	<a href="/JerseyLatestWithSpring"> Home</a>
-	<br>
+<body>
 	<form name="f" method="post"
 		action="JerseyLatestWithSpring/j_spring_security_check">
-		<label style="color: red">${it}</label> <label>Name</label><input
-			type="text" name="j_username"><br> <label>Password</label><input
-			type="password" name="j_password"><br>
-		<button type="submit">Login</button>
+		<table>
+			<tr>
+				<td><label style="color: red">${it}</label></td>
+			</tr>
+			<tr>
+				<td><a href="/JerseyLatestWithSpring"> Home</a></td>
+			</tr>
+		</table>
+		<table>
+			<thead>
+				<tr>
+					<td><h3>Login</h3></td>
+				</tr>
+			</thead>
+			<tr>
+				<td><label>Name</label></td>
+				<td><input type="text" name="j_username" required autofocus></td>
+			</tr>
+			<tr>
+				<td><label>Password</label></td>
+				<td><input type="password" name="j_password" required></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="submit" value="Login" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="checkbox" name="remember-me" />
+					Remember me</td>
+			</tr>
+		</table>
 	</form>
 
-	<div id="login-error">${error}</div>
-	<c:url var="logoUrl"
-		value="/resources/images/150px-Charles_Dickens-A_Christmas_Carol-Cloth-First_Edition_1843.jpg" />
-	<p>
-		<img src="${logoUrl}"></img>Login with Google:
-	</p>
-	<c:url var="openIDLoginUrl" value="/j_spring_openid_security_check" />
-	<form action="${openIDLoginUrl}" method="post">
-		<input name="openid_identifier" type="hidden"
-			value="https://www.google.com/accounts/o8/ud" /> <input
-			type="submit" value="Sign in with Google" />
-	</form>
+
+	<!-- 	<h3>Login</h3> -->
+	<!-- 	<br> -->
+	<%-- 	<label style="color: red">${it}</label> --%>
+	<!-- 	<br> -->
+	<!-- 	<a href="/JerseyLatestWithSpring"> Home</a> -->
+	<!-- 	<br> -->
+	<!-- 	<form name="f" method="post" -->
+	<!-- 		action="JerseyLatestWithSpring/j_spring_security_check"> -->
+	<!-- 		<label>Name</label><input type="text" name="j_username"><br> -->
+	<!-- 		<label>Password</label><input type="password" name="j_password"><br> -->
+	<!-- 		<button type="submit">Login</button> -->
+	<!-- 	</form> -->
+
 </body>
 </html>
