@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	<display-name>Restful Web Application</display-name>
-	
+
 	<welcome-file-list>
 		<welcome-file>home.jsp</welcome-file>
 	</welcome-file-list>
@@ -13,7 +13,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:appServlet-servlet.xml, classpath:spring-security.xml</param-value>
 	</context-param>
-	
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -23,6 +23,10 @@
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>com.rest.jersey</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
 			<param-value>com.rest.jersey</param-value>
 		</init-param>
 		<init-param>
@@ -44,7 +48,7 @@
 		<!-- Blank mapping not working -->
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

@@ -38,7 +38,7 @@
 	<c:url var="openIDLoginUrl" value="/j_spring_openid_security_check" />
 	<form action="${openIDLoginUrl}" method="post">
 		<input name="openid_identifier" type="hidden"
-			value="https://www.google.com/accounts/o8/ud" /> <input
+			value="https://www.google.com/accounts/o8/id" /> <input
 			type="submit" value="Sign in with Google" />
 	</form>
 </body>
